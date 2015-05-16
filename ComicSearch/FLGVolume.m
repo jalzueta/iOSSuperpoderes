@@ -12,7 +12,7 @@
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{
-             @"title" : @"name"
+             @"title" : @"name" // Le asignamos el valor del atributo "name" del JSON a la propiedad "title" de FLGVolume
              };
 }
 

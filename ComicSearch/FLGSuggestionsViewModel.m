@@ -66,9 +66,10 @@
             return [strongSelf fetchSuggestionsWithQuery:query];
         }];
         
+        // Hacemos un binding
         RAC(self, suggestions) = suggestionsSignal;
         
-        // Como el evento "next" no queremos que envie ningun valor asociado, aprovechamos la señal "suggestionsSignal", pero la modificamos para que no lleve ningún valor asociado y se la asignamos a didUpdateSuggestionsSignal
+        // Como el evento "next" no queremos que envie ningun valor asociado, aprovechamos la señal "suggestionsSignal", pero la modificamos para que no lleve ningún valor asociado y se la asignamos a didUpdateSuggestionsSignal (mediante map)
         _didUpdateSuggestionsSignal = [suggestionsSignal map:^id(id value) {
             return nil;
         }];
@@ -86,15 +87,15 @@
     
     return [[client fetchSuggestedVolumesWithQuery:query] map:^id(FLGResponse *response) {
         NSArray *volumes = response.results;
-//        NSMutableArray *titles = [NSMutableArray array];
-//        for (FLGVolume *volume in volumes) {
-//            if ([titles containsObject:volume.title]) {
-//                continue;
-//            }
-//            [titles addObject:volume.title];
-//        }
-//        
-//        return  titles;
+        NSMutableArray *titles = [NSMutableArray array];
+        for (FLGVolume *volume in volumes) {
+            if ([titles containsObject:volume.title]) {
+                continue;
+            }
+            [titles addObject:volume.title];
+        }
+        
+        return  titles;
         
         // Equivalente al bucle "for in" pero con RAC
 //        return [volumes.rac_sequence map:^id(FLGVolume *value) {
@@ -102,13 +103,14 @@
 //        }].array;
         
         // Equivalente al bucle "for in" con filtrado de repetidos pero con RAC
-        return [volumes.rac_sequence foldLeftWithStart:[NSMutableArray array]
-                                                reduce:^id(NSMutableArray *titles, FLGVolume *value) {
-                                                    if (![titles containsObject:value.title]) {
-                                                        [titles addObject:value.title];
-                                                    }
-                                                    return titles;
-                                                }];
+//        return [volumes.rac_sequence foldLeftWithStart:[NSMutableArray array]
+//                                                reduce:^id(NSMutableArray *titles, FLGVolume *value) {
+//                                                    if (![titles containsObject:value.title]) {
+//                                                        [titles addObject:value.title];
+//                                                    }
+//                                                    return titles;
+//                                                }];
+   
     }];
 }
 

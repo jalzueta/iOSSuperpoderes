@@ -35,7 +35,6 @@ static NSString * const format = @"json";
 }
 
 - (RACSignal *) fetchSuggestedVolumesWithQuery: (NSString *) query{
-    // TODO: implement
     NSDictionary *parameters = @{
                                  @"api_key" : APIKey,
                                  @"format" : format,
@@ -65,11 +64,14 @@ static NSString * const format = @"json";
 - (RACSignal *) GET: (NSString *) path
          parameters: (NSDictionary *) parameters{
     
+    // Al hacer este "return" se está creando la suscripción
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        // Todo lo de aqui dentro solo se ejecuta si hay alguien suscrito
         AFHTTPRequestOperation *operation = [self.requestManager GET:path
                                                           parameters:parameters
                                                              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                  [subscriber sendNext:responseObject];
+                                                                 // Este "sendNext" es el que desencadena todo lo demas: transformaciones/mapeados del JSON en objetos y repintado de tablas y demás
                                                                  [subscriber sendCompleted];
                                                              }
                                                              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -80,7 +82,6 @@ static NSString * const format = @"json";
         // Una des-suscripcion ocurre por ejemplo cuando se está "observando" una property mediante binding
         // y el viewController desaparece de la pantalla con un pop
         return [RACDisposable disposableWithBlock:^{
-            // Si hay una des-subscripción, se cancela la peticion GET
             [operation cancel];
         }];
     }];
