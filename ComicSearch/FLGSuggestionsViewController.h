@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SuggestionsViewControllerDelegate;
+
 @interface FLGSuggestionsViewController : UITableViewController<UISearchResultsUpdating>
 
+@property (weak, nonatomic) id<SuggestionsViewControllerDelegate> delegate;
+
 @end
+
+@protocol SuggestionsViewControllerDelegate <NSObject>
+
+- (void) suggestionsViewController: (FLGSuggestionsViewController *) suggestionsViewController didSelectSuggestion: (NSString *)suggestion;
+
+@end
+

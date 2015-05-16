@@ -9,7 +9,7 @@
 #import "FLGSearchViewController.h"
 #import "FLGSuggestionsViewController.h"
 
-@interface FLGSearchViewController ()
+@interface FLGSearchViewController ()<SuggestionsViewControllerDelegate, UISearchBarDelegate>
 
 @end
 
@@ -31,15 +31,36 @@
 - (IBAction)presentsSuggestions:(id)sender{
     // Instanciomos sugVC
     FLGSuggestionsViewController *suggestionsVC = [FLGSuggestionsViewController new];
+    suggestionsVC.delegate = self;
+    
     // SearchController presenta la interfaz de busqueda
     UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:suggestionsVC];
     searchController.searchResultsUpdater = suggestionsVC;
     searchController.hidesNavigationBarDuringPresentation = NO;
+    searchController.searchBar.delegate = self;
     
     // Mostramos el searchController de forma modal
     [self presentViewController:searchController
                        animated:YES
                      completion:nil];
+}
+
+#pragma mark - SuggestionsViewControllerDelegate
+
+- (void) suggestionsViewController:(FLGSuggestionsViewController *)suggestionsViewController didSelectSuggestion:(NSString *)suggestion{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+    // TODO: implementar
+    NSLog(@"suggestion selected: %@", suggestion);
+}
+
+#pragma mark - UISearchBarDelegate
+// Evento de pulsacion del boton "search" del teclado
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+    // TODO: implementar
+    NSLog(@"searchBarSearchButtonClicked: %@", searchBar.text);
 }
 
 
