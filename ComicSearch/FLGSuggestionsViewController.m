@@ -8,6 +8,7 @@
 
 #import "FLGSuggestionsViewController.h"
 #import "FLGSuggestionsViewModel.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 static NSString *const reuseIdentifier = @"cell";
 
@@ -28,7 +29,13 @@ static NSString *const reuseIdentifier = @"cell";
     
     self.viewModel = [FLGSuggestionsViewModel new];
     
-    
+    // Eliminamos referencias circulares, muy comun al trabajar con bloques
+    @weakify(self);
+    // Nos suscribimos a la señal de aviso de que las sugerencias han cambiado
+    [self.viewModel.didUpdateSuggestionsSignal subscribeNext:^(id x) {
+        @strongify(self);
+        [self.tableView reloadData];
+    }];
 }
 
 #pragma mark - Table view data source
