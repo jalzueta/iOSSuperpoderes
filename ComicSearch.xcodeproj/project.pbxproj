@@ -7,14 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5915A1B41B06476200528ED7 /* FLGSuggestionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5915A1B31B06476200528ED7 /* FLGSuggestionsViewController.m */; };
+		5915A1B81B064DAD00528ED7 /* FLGSuggestionsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5915A1B71B064DAD00528ED7 /* FLGSuggestionsViewModel.m */; };
 		59C5AC2C1B063FA300DEABB8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC2B1B063FA300DEABB8 /* main.m */; };
 		59C5AC2F1B063FA300DEABB8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC2E1B063FA300DEABB8 /* AppDelegate.m */; };
-		59C5AC321B063FA300DEABB8 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC311B063FA300DEABB8 /* MasterViewController.m */; };
-		59C5AC351B063FA300DEABB8 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC341B063FA300DEABB8 /* DetailViewController.m */; };
 		59C5AC381B063FA300DEABB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59C5AC361B063FA300DEABB8 /* Main.storyboard */; };
 		59C5AC3A1B063FA300DEABB8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59C5AC391B063FA300DEABB8 /* Images.xcassets */; };
 		59C5AC3D1B063FA300DEABB8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59C5AC3B1B063FA300DEABB8 /* LaunchScreen.xib */; };
 		59C5AC491B063FA300DEABB8 /* ComicSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC481B063FA300DEABB8 /* ComicSearchTests.m */; };
+		59C5AC541B06417400DEABB8 /* FLGSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC531B06417400DEABB8 /* FLGSearchViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,21 +29,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5915A1B21B06476200528ED7 /* FLGSuggestionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLGSuggestionsViewController.h; sourceTree = "<group>"; };
+		5915A1B31B06476200528ED7 /* FLGSuggestionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGSuggestionsViewController.m; sourceTree = "<group>"; };
+		5915A1B61B064DAD00528ED7 /* FLGSuggestionsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLGSuggestionsViewModel.h; sourceTree = "<group>"; };
+		5915A1B71B064DAD00528ED7 /* FLGSuggestionsViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGSuggestionsViewModel.m; sourceTree = "<group>"; };
 		59C5AC261B063FA300DEABB8 /* ComicSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComicSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C5AC2A1B063FA300DEABB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59C5AC2B1B063FA300DEABB8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		59C5AC2D1B063FA300DEABB8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		59C5AC2E1B063FA300DEABB8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		59C5AC301B063FA300DEABB8 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
-		59C5AC311B063FA300DEABB8 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
-		59C5AC331B063FA300DEABB8 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		59C5AC341B063FA300DEABB8 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		59C5AC371B063FA300DEABB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		59C5AC391B063FA300DEABB8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		59C5AC3C1B063FA300DEABB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		59C5AC421B063FA300DEABB8 /* ComicSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComicSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C5AC471B063FA300DEABB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59C5AC481B063FA300DEABB8 /* ComicSearchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicSearchTests.m; sourceTree = "<group>"; };
+		59C5AC521B06417400DEABB8 /* FLGSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLGSearchViewController.h; sourceTree = "<group>"; };
+		59C5AC531B06417400DEABB8 /* FLGSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGSearchViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5915A1B51B064D7D00528ED7 /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				5915A1B61B064DAD00528ED7 /* FLGSuggestionsViewModel.h */,
+				5915A1B71B064DAD00528ED7 /* FLGSuggestionsViewModel.m */,
+			);
+			name = "View Models";
+			sourceTree = "<group>";
+		};
 		59C5AC1D1B063FA300DEABB8 = {
 			isa = PBXGroup;
 			children = (
@@ -86,11 +98,9 @@
 			children = (
 				59C5AC2D1B063FA300DEABB8 /* AppDelegate.h */,
 				59C5AC2E1B063FA300DEABB8 /* AppDelegate.m */,
-				59C5AC301B063FA300DEABB8 /* MasterViewController.h */,
-				59C5AC311B063FA300DEABB8 /* MasterViewController.m */,
-				59C5AC331B063FA300DEABB8 /* DetailViewController.h */,
-				59C5AC341B063FA300DEABB8 /* DetailViewController.m */,
 				59C5AC361B063FA300DEABB8 /* Main.storyboard */,
+				5915A1B51B064D7D00528ED7 /* View Models */,
+				59C5AC551B0641B000DEABB8 /* Controllers */,
 				59C5AC391B063FA300DEABB8 /* Images.xcassets */,
 				59C5AC3B1B063FA300DEABB8 /* LaunchScreen.xib */,
 				59C5AC291B063FA300DEABB8 /* Supporting Files */,
@@ -122,6 +132,17 @@
 				59C5AC471B063FA300DEABB8 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		59C5AC551B0641B000DEABB8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				59C5AC521B06417400DEABB8 /* FLGSearchViewController.h */,
+				59C5AC531B06417400DEABB8 /* FLGSearchViewController.m */,
+				5915A1B21B06476200528ED7 /* FLGSuggestionsViewController.h */,
+				5915A1B31B06476200528ED7 /* FLGSuggestionsViewController.m */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,10 +245,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5915A1B41B06476200528ED7 /* FLGSuggestionsViewController.m in Sources */,
 				59C5AC2F1B063FA300DEABB8 /* AppDelegate.m in Sources */,
-				59C5AC321B063FA300DEABB8 /* MasterViewController.m in Sources */,
+				5915A1B81B064DAD00528ED7 /* FLGSuggestionsViewModel.m in Sources */,
 				59C5AC2C1B063FA300DEABB8 /* main.m in Sources */,
-				59C5AC351B063FA300DEABB8 /* DetailViewController.m in Sources */,
+				59C5AC541B06417400DEABB8 /* FLGSearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +376,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ComicSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -364,6 +387,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ComicSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -422,6 +446,7 @@
 				59C5AC4E1B063FA300DEABB8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		59C5AC4F1B063FA300DEABB8 /* Build configuration list for PBXNativeTarget "ComicSearchTests" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +455,7 @@
 				59C5AC511B063FA300DEABB8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

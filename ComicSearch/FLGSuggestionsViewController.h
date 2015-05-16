@@ -1,5 +1,5 @@
 //
-//  MasterViewController.h
+//  FLGSuggestionsViewController.h
 //  ComicSearch
 //
 //  Created by Javi Alzueta on 15/5/15.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MasterViewController : UITableViewController
-
+@interface FLGSuggestionsViewController : UITableViewController<UISearchResultsUpdating>
 
 @end
-
