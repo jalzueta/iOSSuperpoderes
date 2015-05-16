@@ -8,6 +8,7 @@
 
 #import "FLGSuggestionsViewModel.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import "FLGComicVineClient.h"
 
 @interface FLGSuggestionsViewModel ()
 
@@ -79,10 +80,11 @@
 #pragma mark - Private
 
 - (RACSignal *)fetchSuggestionsWithQuery: (NSString *) query{
-    NSArray *fakeSuggestions = [query componentsSeparatedByString:@" "];
+    FLGComicVineClient *client = [FLGComicVineClient new];
     
-    // Creamos una señal que devuelva el array de sugerencias, con un retardo para simular la latencia de la red
-    return [[RACSignal return:fakeSuggestions] delay:.5];
+    return [[client fetchSuggestedVolumesWithQuery:query] map:^id(id value) {
+        return @[@"hola", @"gente"];
+    }];
 }
 
 @end
