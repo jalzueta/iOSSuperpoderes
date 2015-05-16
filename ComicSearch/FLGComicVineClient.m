@@ -9,6 +9,8 @@
 #import "FLGComicVineClient.h"
 #import <AFNetworking/AFNetworking.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import "FLGResponse.h"
+#import "FLGVolume.h"
 
 static NSString * const APIKey = @"8eacfa46646cf4888066fed652021d901d19cc89";
 static NSString * const format = @"json";
@@ -44,16 +46,26 @@ static NSString * const format = @"json";
                                  @"resources" : @"volume" // tipo de recurso
                                  };
     
-    return [self GET:@"search" parameters:parameters];
+    return  [self GET:@"search" parameters:parameters resultClass:[FLGVolume class]];
 }
 
 #pragma mark - Private
 
 - (RACSignal *) GET: (NSString *) path
+         parameters: (NSDictionary *) parameters
+        resultClass: (Class) resultClass{
+    return [[self GET:path
+          parameters:parameters] map:^id(NSDictionary *JSONDictionary) {
+        // Metodo a través del cual vamos a mapear el JSON a un objeto de la clase "resultClass"
+        return [FLGResponse responseWithJSONDictionary:JSONDictionary
+                                           resultClass:resultClass];
+    }];
+}
+
+- (RACSignal *) GET: (NSString *) path
          parameters: (NSDictionary *) parameters{
     
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        // TODO: implementar
         AFHTTPRequestOperation *operation = [self.requestManager GET:path
                                                           parameters:parameters
                                                              success:^(AFHTTPRequestOperation *operation, id responseObject) {

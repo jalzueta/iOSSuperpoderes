@@ -9,6 +9,8 @@
 #import "FLGSuggestionsViewModel.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "FLGComicVineClient.h"
+#import "FLGResponse.h"
+#import "FLGVolume.h"
 
 @interface FLGSuggestionsViewModel ()
 
@@ -59,7 +61,7 @@
         FLGSuggestionsViewModel * __weak weakSelf = self;
         // Atajo de ReactiveCocoa: @weakify(self);
         RACSignal *suggestionsSignal = [input flattenMap:^RACStream *(NSString *query) {
-            FLGSuggestionsViewModel * __strong strongSelf = self;
+            FLGSuggestionsViewModel * __strong strongSelf = weakSelf;
             // Atajo de ReactiveCocoa: @strongify(self);
             return [strongSelf fetchSuggestionsWithQuery:query];
         }];
@@ -82,8 +84,31 @@
 - (RACSignal *)fetchSuggestionsWithQuery: (NSString *) query{
     FLGComicVineClient *client = [FLGComicVineClient new];
     
-    return [[client fetchSuggestedVolumesWithQuery:query] map:^id(id value) {
-        return @[@"hola", @"gente"];
+    return [[client fetchSuggestedVolumesWithQuery:query] map:^id(FLGResponse *response) {
+        NSArray *volumes = response.results;
+//        NSMutableArray *titles = [NSMutableArray array];
+//        for (FLGVolume *volume in volumes) {
+//            if ([titles containsObject:volume.title]) {
+//                continue;
+//            }
+//            [titles addObject:volume.title];
+//        }
+//        
+//        return  titles;
+        
+        // Equivalente al bucle "for in" pero con RAC
+//        return [volumes.rac_sequence map:^id(FLGVolume *value) {
+//            return value.title;
+//        }].array;
+        
+        // Equivalente al bucle "for in" con filtrado de repetidos pero con RAC
+        return [volumes.rac_sequence foldLeftWithStart:[NSMutableArray array]
+                                                reduce:^id(NSMutableArray *titles, FLGVolume *value) {
+                                                    if (![titles containsObject:value.title]) {
+                                                        [titles addObject:value.title];
+                                                    }
+                                                    return titles;
+                                                }];
     }];
 }
 
