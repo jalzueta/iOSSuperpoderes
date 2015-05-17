@@ -48,4 +48,18 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+
+
+/* PRACTICA: Mirar grabacion
+ searchViewModel -> Metodo que devuelva el ID del comic pulsado.
+ Con ese Id, construir la URL para que nos devuelva los personajes (4050-ID)
+ 
+ 
+ 
+ */
+
+
+
+
+
 @end
