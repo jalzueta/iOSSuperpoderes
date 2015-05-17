@@ -65,7 +65,7 @@ static NSString * const format = @"json";
          parameters: (NSDictionary *) parameters{
     
     // Al hacer este "return" se está creando la suscripción
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         // Todo lo de aqui dentro solo se ejecuta si hay alguien suscrito
         AFHTTPRequestOperation *operation = [self.requestManager GET:path
                                                           parameters:parameters
@@ -84,7 +84,8 @@ static NSString * const format = @"json";
         return [RACDisposable disposableWithBlock:^{
             [operation cancel];
         }];
-    }];
+    }] deliverOn:[RACScheduler scheduler]]; // deliverOn:[RACScheduler scheduler] -> Con esto mandamos la respuesta de la señal a un thread secundario, incluido el tema de actualización de la tabla.
+    // Habrá que volver al thread principal para el refresco de la tabla
 }
 
 

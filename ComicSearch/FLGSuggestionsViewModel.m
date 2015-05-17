@@ -66,15 +66,22 @@
             return [strongSelf fetchSuggestionsWithQuery:query];
         }];
         
-        // Hacemos un binding
-        RAC(self, suggestions) = suggestionsSignal;
+        // Hacemos un binding, capturando errores
+        // Devolvemos una señal montada a mano en caso de error
+        // La señal devuelve un array con el error
+//        RAC(self, suggestions) = [suggestionsSignal catchTo:[RACSignal return:@[@"Error!!!"]]];
         
-        // Como el evento "next" no queremos que envie ningun valor asociado, aprovechamos la señal "suggestionsSignal", pero la modificamos para que no lleve ningún valor asociado y se la asignamos a didUpdateSuggestionsSignal (mediante map)
-        _didUpdateSuggestionsSignal = [suggestionsSignal map:^id(id value) {
+        RAC(self, suggestions) = [suggestionsSignal catch:^RACSignal *(NSError *error) {
+            return [RACSignal return:@[error.localizedDescription]];
+        }];
+        
+        // Como el evento "next" no queremos que envie ningun valor asociado, aprovechamos la señal "suggestionsSignal", la observamos y la modificamos para que no lleve ningún valor asociado y se la asignamos a didUpdateSuggestionsSignal (mediante map)
+        _didUpdateSuggestionsSignal = [RACObserve(self, suggestions) map:^id(id value) {
             return nil;
         }];
+        
         // Esta sería una forma abreviada para hacer lo mismo (sin bloques)
-//        _didUpdateSuggestionsSignal = [suggestionsSignal mapReplace:nil];
+//        _didUpdateSuggestionsSignal = [RACObserve(self, suggestions) mapReplace:nil];
         
     }
     return self;
@@ -85,7 +92,7 @@
 - (RACSignal *)fetchSuggestionsWithQuery: (NSString *) query{
     FLGComicVineClient *client = [FLGComicVineClient new];
     
-    return [[client fetchSuggestedVolumesWithQuery:query] map:^id(FLGResponse *response) {
+    return [[[client fetchSuggestedVolumesWithQuery:query] map:^id(FLGResponse *response) {
         NSArray *volumes = response.results;
         NSMutableArray *titles = [NSMutableArray array];
         for (FLGVolume *volume in volumes) {
@@ -111,7 +118,7 @@
 //                                                    return titles;
 //                                                }];
    
-    }];
+    }] deliverOnMainThread];
 }
 
 @end
