@@ -53,6 +53,12 @@
     return cell;
 }
 
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == (self.viewModel.numberOfResults -1)) {
+        [self.viewModel fetchMoreResults];
+    }
+}
+
 #pragma mark - Actions
 
 - (IBAction)presentsSuggestions:(id)sender{

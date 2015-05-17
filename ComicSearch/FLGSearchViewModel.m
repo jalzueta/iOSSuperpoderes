@@ -29,6 +29,8 @@
 
 @property (strong, nonatomic) NSFetchedResultsController *frc;
 
+@property (strong, nonatomic) RACSubject *didUpdateResultsSubject; //  es hija de RACSignal
+
 @end
 
 @implementation FLGSearchViewModel
@@ -68,13 +70,18 @@
         
         // Enviamos una señal cada vez que se llame al método "controllerDidChangeContent", del delegado de NSFetchResultsController
         // Como hay un suscriptor (FLGSearchViewController) de esta señal "didUpdateResults", el recibirá la señal y lanzará el proceso correspondiente, en este caso "[self.tableView reloadData]"
-        _didUpdateResults = [self rac_signalForSelector:@selector(controllerDidChangeContent:)];
+//        _didUpdateResults = [self rac_signalForSelector:@selector(controllerDidChangeContent:)];
+        
+        _didUpdateResultsSubject = [RACSubject subject];
     }
     return self;
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller{
-    
+// Sobreescribimos la señal didUpdateResults, que es a la que esta suscrita el FLGSearchViewController para refrescar la tabla, y devolvemos una señal que estamos lanzando de forma manual mediante el evento de delegado de actualizacion de resultados del NSFetchedResultsController
+
+
+- (RACSignal *)didUpdateResults{
+    return self.didUpdateResultsSubject;
 }
 
 - (void)setQuery:(NSString *)query{
@@ -114,11 +121,17 @@
                                                             //haya un self dentro del bloque
     [context performBlock:^{
         [ManagedVolume deleteAllVolumesInManageObjectContext:context];
+        // para que se borren los datos de la busqueda anterior al lanzar una busqueda nueva salvamos el contexto
+        [context save:nil];
     }];
     
     // Convertimos una señal fría en una señal multicast
     // publish: permite que haya varios suscriptores a una misma señal
     // connect: nos suscribimos a la señal
+    [[[self fetchNextPage] publish] connect];
+}
+
+- (void) fetchMoreResults{
     [[[self fetchNextPage] publish] connect];
 }
 
@@ -153,5 +166,12 @@
         [context mergeChangesFromContextDidSaveNotification:notification];
     }];
 }
+
+#pragma mark - NSFetchedResultsControllerDelegate
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller{
+    // Se lanza a mano un evento "sendNext" de una señal manual
+    [self.didUpdateResultsSubject sendNext:nil];
+}
+
 
 @end

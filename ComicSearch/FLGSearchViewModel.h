@@ -20,4 +20,6 @@
 
 - (FLGSearchResultViewModel *) resultAtIndex: (NSUInteger) index;
 
+- (void) fetchMoreResults;
+
 @end
