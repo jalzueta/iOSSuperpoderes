@@ -15,7 +15,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <Groot/Groot.h>
 
-@interface FLGSearchViewModel ()
+@interface FLGSearchViewModel ()<NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) FLGComicVineClient *client;
 @property (nonatomic) NSUInteger currentPage; // Muchos servicos web inician su paginacion a "1"
@@ -26,6 +26,8 @@
 // Contextos privado (escritura/borrado) y principal (lectura)
 @property (strong, nonatomic) NSManagedObjectContext *privateContext;
 @property (strong, nonatomic) NSManagedObjectContext *mainContext;
+
+@property (strong, nonatomic) NSFetchedResultsController *frc;
 
 @end
 
@@ -56,8 +58,23 @@
                selector:@selector(privateContextDidSave:)
                    name:NSManagedObjectContextDidSaveNotification
                  object:self.privateContext]; // Solo nos interesan las notificaciones del contexto privado, que es el que va a escribir datos en base de datos
+        _frc = [[NSFetchedResultsController alloc] initWithFetchRequest:[ManagedVolume fetchRequestForAllVolumes]
+                                                   managedObjectContext:_mainContext
+                                                     sectionNameKeyPath:nil
+                                                              cacheName:nil];
+        // Nos ponemos como delegados de frc para que nos lleguen los eventos, concretamente "controllerDidChangeContent"
+        _frc.delegate = self;
+        [_frc performFetch:NULL];
+        
+        // Enviamos una señal cada vez que se llame al método "controllerDidChangeContent", del delegado de NSFetchResultsController
+        // Como hay un suscriptor (FLGSearchViewController) de esta señal "didUpdateResults", el recibirá la señal y lanzará el proceso correspondiente, en este caso "[self.tableView reloadData]"
+        _didUpdateResults = [self rac_signalForSelector:@selector(controllerDidChangeContent:)];
     }
     return self;
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller{
+    
 }
 
 - (void)setQuery:(NSString *)query{
@@ -68,8 +85,8 @@
 }
 
 - (NSUInteger)numberOfResults{
-    // FIXME: temporary
-    return 1;
+    id<NSFetchedResultsSectionInfo> sectionInfo = self.frc.sections[0];
+    return [sectionInfo numberOfObjects];
 }
 
 - (FLGSearchResultViewModel *) resultAtIndex:(NSUInteger)index{
@@ -79,8 +96,11 @@
 //                                                        title:@"Lorem fistrum pupita pupita condemor torpedo ese hombree al ataquerl."
 //                                                    publisher:@"jgagc jasjg jcagsj "];
     
-    // TODO: implementar
-    return nil;
+    ManagedVolume *volume = [self.frc objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    
+    return [[FLGSearchResultViewModel alloc] initWithImageURL:[NSURL URLWithString:volume.imageURL]
+                                                        title:volume.title
+                                                    publisher:volume.publisher];
 }
 
 #pragma mark - Private
