@@ -13,11 +13,15 @@
 #import "FLGResponse.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <Groot/Groot.h>
 
 @interface FLGSearchViewModel ()
 
 @property (strong, nonatomic) FLGComicVineClient *client;
 @property (nonatomic) NSUInteger currentPage; // Muchos servicos web inician su paginacion a "1"
+
+// Stack de Core Data - Groot
+@property (strong, nonatomic) GRTManagedStore *store;
 
 // Contextos privado (escritura/borrado) y principal (lectura)
 @property (strong, nonatomic) NSManagedObjectContext *privateContext;
@@ -27,12 +31,31 @@
 
 @implementation FLGSearchViewModel
 
+- (void) dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         _client = [FLGComicVineClient new];
         _currentPage = 1;
+        
+        _store = [GRTManagedStore temporaryManagedStore];
+        
+        _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        _mainContext.persistentStoreCoordinator = _store.persistentStoreCoordinator;
+        
+        _privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _privateContext.persistentStoreCoordinator = _store.persistentStoreCoordinator;
+        
+        // Cuando se escriben datos en Core Data, el contexto en el que se escribe envía una notificacion a través de NSNotificationCenter. Nos surcribimos a esta notificacion
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self
+               selector:@selector(privateContextDidSave:)
+                   name:NSManagedObjectContextDidSaveNotification
+                 object:self.privateContext]; // Solo nos interesan las notificaciones del contexto privado, que es el que va a escribir datos en base de datos
     }
     return self;
 }
@@ -67,7 +90,8 @@
     
     // Lo metemos dentro de este método porque así nos aseguramos de  que lo que va en el bloque se va
     // a ejecutar en el hilo en que hemos creado el "privateContext"
-    NSManagedObjectContext *context = self.privateContext; // Hacemos esto para que no haya un self dentro del bloque
+    NSManagedObjectContext *context = self.privateContext;  // Hacemos esto para que no
+                                                            //haya un self dentro del bloque
     [context performBlock:^{
         [ManagedVolume deleteAllVolumesInManageObjectContext:context];
     }];
@@ -79,10 +103,35 @@
 }
 
 - (RACSignal *) fetchNextPage{
-    return [[[self.client fetchVolumsWithQuery:self.query page:self.currentPage++] doNext:^(id x) {
-        // TODO: save data
+    
+    NSManagedObjectContext *context = self.privateContext;  // Hacemos esto para que no
+                                                            //haya un self dentro del bloque
+    
+    return [[[self.client fetchVolumsWithQuery:self.query page:self.currentPage++] doNext:^(FLGResponse *response) {
+        [GRTJSONSerialization insertObjectsForEntityName:@"Volume"
+                                           fromJSONArray:response.results
+                                  inManagedObjectContext:self.privateContext
+                                                   error:nil];
+        
+        // Lo metemos dentro de este método porque así nos aseguramos de  que lo que va en el bloque se va
+        // a ejecutar en el hilo en que hemos creado el "privateContext"
+        [context performBlockAndWait:^{
+            [context save:nil];
+        }];
     }] deliverOnMainThread];
 }
 
+#pragma mark - Notification
+- (void) privateContextDidSave: (NSNotification *) notification{
+    NSManagedObjectContext *context = self.mainContext; // Hacemos esto para que no
+                                                        //haya un self dentro del bloque
+    // Lo metemos dentro de este método porque así nos aseguramos de  que lo que va en el bloque se va
+    // a ejecutar en el hilo en que hemos creado el "privateContext"
+    [context performBlock:^{
+        // Recibimos los cambios en base de datos (que ha realizado el privateContext)
+        // y actualizamos el contenido del contexto publico (mainContext)
+        [context mergeChangesFromContextDidSaveNotification:notification];
+    }];
+}
 
 @end
