@@ -9,7 +9,14 @@
 #import "FLGSearchViewController.h"
 #import "FLGSuggestionsViewController.h"
 
+#import "FLGSearchViewModel.h"
+#import "FLGSearchResultCell.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 @interface FLGSearchViewController ()<SuggestionsViewControllerDelegate, UISearchBarDelegate>
+
+@property (strong, nonatomic) FLGSearchViewModel *viewModel;
 
 @end
 
@@ -17,13 +24,33 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.viewModel = [FLGSearchViewModel new];
+    
+    @weakify(self);
+    [self.viewModel.didUpdateResults subscribeNext:^(id x) {
+        @strongify(self);
+        [self.tableView reloadData];
+    }];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return self.viewModel.numberOfResults;
+}
+
+- (UITableViewCell *) tableView:(UITableView *)tableView
+          cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    FLGSearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FLGSearchResultCell"];
+    
+    FLGSearchResultViewModel *result = [self.viewModel resultAtIndex:indexPath.row];
+    
+    [cell configureWithSearchResult:result];
+    
+    return cell;
 }
 
 #pragma mark - Actions
@@ -50,8 +77,9 @@
 - (void) suggestionsViewController:(FLGSuggestionsViewController *)suggestionsViewController didSelectSuggestion:(NSString *)suggestion{
     [self dismissViewControllerAnimated:YES
                              completion:nil];
-    // TODO: implementar
-    NSLog(@"suggestion selected: %@", suggestion);
+    // Actualizamos la "query" de nuestro viewModel.
+    // El se encargara de observar esta propiedad y lanzar una nueva búsqueda
+    self.viewModel.query = suggestion;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -59,10 +87,10 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [self dismissViewControllerAnimated:YES
                              completion:nil];
-    // TODO: implementar
-    NSLog(@"searchBarSearchButtonClicked: %@", searchBar.text);
+    
+    // Actualizamos la "query" de nuestro viewModel.
+    // El se encargara de observar esta propiedad y lanzar una nueva búsqueda
+    self.viewModel.query = searchBar.text;
 }
-
-
 
 @end

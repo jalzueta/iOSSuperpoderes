@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import <AFNetworking/UIKit+AFNetworking.h>
+
 @interface AppDelegate ()
 
 @end
@@ -16,6 +18,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    // Le decimos a AFNetworking que gestione el indicador de actividad de red
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
     // Override point for customization after application launch.
     return YES;
 }

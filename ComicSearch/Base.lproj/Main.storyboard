@@ -23,16 +23,52 @@
         <scene sceneID="2wZ-eT-4De">
             <objects>
                 <tableViewController id="o0m-9H-wKm" customClass="FLGSearchViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="KSU-Ij-W8w">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="96" sectionHeaderHeight="22" sectionFooterHeight="22" id="KSU-Ij-W8w">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="none" id="exp-cl-xXG">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FLGSearchResultCell" id="exp-cl-xXG" customClass="FLGSearchResultCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="exp-cl-xXG" id="Epa-uk-WjP">
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="on4-xD-WzQ">
+                                            <rect key="frame" x="15" y="8" width="56" height="80"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="56" id="UJe-jc-HKS"/>
+                                                <constraint firstAttribute="height" constant="80" id="g3z-4B-G5L"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFL-nU-bio">
+                                            <rect key="frame" x="79" y="8" width="44" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oos-GP-TDU">
+                                            <rect key="frame" x="79" y="31" width="36" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="jFL-nU-bio" firstAttribute="top" secondItem="Epa-uk-WjP" secondAttribute="top" constant="8" id="0ee-8z-kOH"/>
+                                        <constraint firstItem="jFL-nU-bio" firstAttribute="leading" secondItem="on4-xD-WzQ" secondAttribute="trailing" constant="8" id="ATb-nb-jX4"/>
+                                        <constraint firstItem="Oos-GP-TDU" firstAttribute="leading" secondItem="on4-xD-WzQ" secondAttribute="trailing" constant="8" id="EuM-8V-viy"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Oos-GP-TDU" secondAttribute="trailing" constant="20" symbolic="YES" id="Hga-HA-gnE"/>
+                                        <constraint firstItem="on4-xD-WzQ" firstAttribute="leading" secondItem="Epa-uk-WjP" secondAttribute="leading" constant="15" id="I58-2l-ABO"/>
+                                        <constraint firstItem="on4-xD-WzQ" firstAttribute="top" secondItem="Epa-uk-WjP" secondAttribute="top" constant="8" id="ZYe-ii-hYE"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jFL-nU-bio" secondAttribute="trailing" constant="20" symbolic="YES" id="ijh-AD-7BK"/>
+                                        <constraint firstItem="Oos-GP-TDU" firstAttribute="top" secondItem="jFL-nU-bio" secondAttribute="bottom" constant="2" id="vH0-lv-ew2"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="coverImageView" destination="on4-xD-WzQ" id="k0n-3L-h27"/>
+                                    <outlet property="publisherLabel" destination="Oos-GP-TDU" id="BMh-kP-d1z"/>
+                                    <outlet property="titleLabel" destination="jFL-nU-bio" id="SD6-5x-zwI"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

@@ -26,17 +26,26 @@
                            error:NULL];
     
     id results = JSONDictionary[@"results"];
-    if ([results isKindOfClass:[NSArray class]]) {
-        // Nos llega un array en "results"
-        response.results = [MTLJSONAdapter modelsOfClass:resultClass
-                                           fromJSONArray:results
-                                                   error:NULL];
-    }else {
-        // Nos llega un diccinario en "results"
-        response.results = [MTLJSONAdapter modelOfClass:resultClass
-                                     fromJSONDictionary:results
-                                                  error:NULL];
+    
+    // Comprobamos si le hemos pasado una "resultClass"
+    if (resultClass != Nil) {
+        if ([results isKindOfClass:[NSArray class]]) {
+            // Nos llega un array en "results"
+            response.results = [MTLJSONAdapter modelsOfClass:resultClass
+                                               fromJSONArray:results
+                                                       error:NULL];
+        }else {
+            // Nos llega un diccinario en "results"
+            response.results = [MTLJSONAdapter modelOfClass:resultClass
+                                         fromJSONDictionary:results
+                                                      error:NULL];
+        }
+    } else{
+        // Queremos que se mantenga el JSON
+        response.results = results;
     }
+    
+    
     
     return response;
 }

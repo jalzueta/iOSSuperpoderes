@@ -48,6 +48,21 @@ static NSString * const format = @"json";
     return  [self GET:@"search" parameters:parameters resultClass:[FLGVolume class]];
 }
 
+- (RACSignal *) fecthVolumsWithQuery: (NSString *) query page: (NSUInteger) page{
+    NSDictionary *parameters = @{
+                                 @"api_key" : APIKey,
+                                 @"format" : format,
+                                 @"field_list" : @"id,image,name,publisher", //campos que queremos que nos devuelva la peticion
+                                 @"limit" : @20,
+                                 @"page" : @(page),
+                                 @"query": query,
+                                 @"resources" : @"volume" // tipo de recurso
+                                 };
+    
+    // Pasamos "Nil" (mayúsculas, porque espera una clase) en la resourceClass porque no queremos que haga ninguna transformación con los datos, solo con los metadatos
+    return  [self GET:@"search" parameters:parameters resultClass:Nil];
+}
+
 #pragma mark - Private
 
 - (RACSignal *) GET: (NSString *) path
