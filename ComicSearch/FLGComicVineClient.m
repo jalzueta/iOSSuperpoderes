@@ -48,7 +48,7 @@ static NSString * const format = @"json";
     return  [self GET:@"search" parameters:parameters resultClass:[FLGVolume class]];
 }
 
-- (RACSignal *) fecthVolumsWithQuery: (NSString *) query page: (NSUInteger) page{
+- (RACSignal *) fetchVolumsWithQuery: (NSString *) query page: (NSUInteger) page{
     NSDictionary *parameters = @{
                                  @"api_key" : APIKey,
                                  @"format" : format,

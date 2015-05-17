@@ -9,6 +9,8 @@
 #import "FLGSearchViewModel.h"
 #import "FLGSearchResultViewModel.h"
 #import "FLGComicVineClient.h"
+#import "ManagedVolume.h"
+#import "FLGResponse.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -16,6 +18,10 @@
 
 @property (strong, nonatomic) FLGComicVineClient *client;
 @property (nonatomic) NSUInteger currentPage; // Muchos servicos web inician su paginacion a "1"
+
+// Contextos privado (escritura/borrado) y principal (lectura)
+@property (strong, nonatomic) NSManagedObjectContext *privateContext;
+@property (strong, nonatomic) NSManagedObjectContext *mainContext;
 
 @end
 
@@ -27,13 +33,15 @@
     if (self) {
         _client = [FLGComicVineClient new];
         _currentPage = 1;
-        
-        // Observamos a query, ignorando valores "nil" y cadenas vacias
-        RACSignal *input = [RACObserve(self, query) filter:^BOOL(NSString *value) {
-            return value.length > 0;
-        }];
     }
     return self;
+}
+
+- (void)setQuery:(NSString *)query{
+    if (![_query isEqualToString:query]) {
+        _query = [query copy];
+        [self beginNewSearch];
+    }
 }
 
 - (NSUInteger)numberOfResults{
@@ -54,9 +62,27 @@
 
 #pragma mark - Private
 
-- (RACSignal *) fetchNextPage{
-    // TODO: implementar
-    return nil;
+- (void) beginNewSearch{
+    self.currentPage = 1;
+    
+    // Lo metemos dentro de este método porque así nos aseguramos de  que lo que va en el bloque se va
+    // a ejecutar en el hilo en que hemos creado el "privateContext"
+    NSManagedObjectContext *context = self.privateContext; // Hacemos esto para que no haya un self dentro del bloque
+    [context performBlock:^{
+        [ManagedVolume deleteAllVolumesInManageObjectContext:context];
+    }];
+    
+    // Convertimos una señal fría en una señal multicast
+    // publish: permite que haya varios suscriptores a una misma señal
+    // connect: nos suscribimos a la señal
+    [[[self fetchNextPage] publish] connect];
 }
+
+- (RACSignal *) fetchNextPage{
+    return [[[self.client fetchVolumsWithQuery:self.query page:self.currentPage++] doNext:^(id x) {
+        // TODO: save data
+    }] deliverOnMainThread];
+}
+
 
 @end
