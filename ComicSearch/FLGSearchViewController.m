@@ -28,6 +28,7 @@
     self.viewModel = [FLGSearchViewModel new];
     
     @weakify(self);
+    // Nos suscribimos a la señal de aviso de que los resultados de busqueda han cambiado: esta señal está en el SearchViewModel como property publica
     [self.viewModel.didUpdateResults subscribeNext:^(id x) {
         @strongify(self);
         [self.tableView reloadData];
@@ -53,6 +54,7 @@
     return cell;
 }
 
+// Para la paginacion de resultados de busqueda
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == (self.viewModel.numberOfResults -1)) {
         [self.viewModel fetchMoreResults];

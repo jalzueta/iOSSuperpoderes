@@ -45,7 +45,7 @@ static NSString * const format = @"json";
                                  @"resources" : @"volume" // tipo de recurso
                                  };
     
-    return  [self GET:@"search" parameters:parameters resultClass:[FLGVolume class]];
+    return [self GET:@"search" parameters:parameters resultClass:[FLGVolume class]];
 }
 
 - (RACSignal *) fetchVolumsWithQuery: (NSString *) query page: (NSUInteger) page{
@@ -69,7 +69,7 @@ static NSString * const format = @"json";
          parameters: (NSDictionary *) parameters
         resultClass: (Class) resultClass{
     return [[self GET:path
-          parameters:parameters] map:^id(NSDictionary *JSONDictionary) {
+           parameters:parameters] map:^id(NSDictionary *JSONDictionary) {
         // Metodo a través del cual vamos a mapear el JSON a un objeto de la clase "resultClass"
         return [FLGResponse responseWithJSONDictionary:JSONDictionary
                                            resultClass:resultClass];

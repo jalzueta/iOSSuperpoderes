@@ -17,6 +17,7 @@
 @dynamic publisher;
 @dynamic insertionDate;
 
+// Metodo en el que entra cuando se inserta un objeto en Core Data
 - (void)awakeFromInsert{
     [super awakeFromInsert];
     self.insertionDate = [NSDate date];
@@ -35,7 +36,7 @@
 
 + (void) deleteAllVolumesInManageObjectContext: (NSManagedObjectContext *) managedObjectContext{
     NSFetchRequest *fecthRequest = [self fetchRequestForAllVolumes];
-    // Le decios que no queremos que traiga de Core Data los valores de las properties, no hacen falta para borrar los registros de Core Data y es mucho más rápido
+    // Le decimos que no queremos que traiga de Core Data los valores de las properties, no hacen falta para borrar los registros de Core Data y es mucho más rápido
     fecthRequest.includesPropertyValues = NO;
     
     NSArray *volumes = [managedObjectContext executeFetchRequest:fecthRequest

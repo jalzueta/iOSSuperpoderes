@@ -132,11 +132,28 @@
 				59193E371B078019006FCB2B /* FLGResponse.m */,
 				59193E391B079092006FCB2B /* FLGVolume.h */,
 				59193E3A1B079092006FCB2B /* FLGVolume.m */,
+				59392E9D1B84ED9200AF7178 /* Core Data */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		59392E9C1B84DCBE00AF7178 /* API Client */ = {
+			isa = PBXGroup;
+			children = (
+				59193E331B07583C006FCB2B /* FLGComicVineClient.h */,
+				59193E341B07583C006FCB2B /* FLGComicVineClient.m */,
+			);
+			name = "API Client";
+			sourceTree = "<group>";
+		};
+		59392E9D1B84ED9200AF7178 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
 				5926CC5E1B08BFBB00573D59 /* Search.xcdatamodeld */,
 				5926CC611B08C11100573D59 /* ManagedVolume.h */,
 				5926CC621B08C11100573D59 /* ManagedVolume.m */,
 			);
-			name = Models;
+			name = "Core Data";
 			sourceTree = "<group>";
 		};
 		59C5AC1D1B063FA300DEABB8 = {
@@ -168,12 +185,11 @@
 				5926CC5D1B08BF9100573D59 /* Models */,
 				5915A1B51B064D7D00528ED7 /* View Models */,
 				5926CC591B08A0DF00573D59 /* Views */,
+				59392E9C1B84DCBE00AF7178 /* API Client */,
 				59C5AC551B0641B000DEABB8 /* Controllers */,
 				59C5AC391B063FA300DEABB8 /* Images.xcassets */,
 				59C5AC3B1B063FA300DEABB8 /* LaunchScreen.xib */,
 				59C5AC291B063FA300DEABB8 /* Supporting Files */,
-				59193E331B07583C006FCB2B /* FLGComicVineClient.h */,
-				59193E341B07583C006FCB2B /* FLGComicVineClient.m */,
 			);
 			path = ComicSearch;
 			sourceTree = "<group>";

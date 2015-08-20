@@ -22,8 +22,7 @@
 @implementation FLGSearchResultCell
 
 - (void) configureWithSearchResult:(FLGSearchResultViewModel *)searchResult{
-    // TODO: implementar
-    [self.coverImageView setImageWithURL:searchResult.imageURL];
+    [self.coverImageView setImageWithURL:searchResult.imageURL]; // Metodo de AFNetworking: realiza la descarga en segundo plano
     self.titleLabel.text = searchResult.title;
     self.publisherLabel.text = searchResult.publisher;
 }

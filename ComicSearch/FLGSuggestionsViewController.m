@@ -31,7 +31,7 @@ static NSString *const reuseIdentifier = @"cell";
     
     // Eliminamos referencias circulares, muy comun al trabajar con bloques
     @weakify(self);
-    // Nos suscribimos a la señal de aviso de que las sugerencias han cambiado
+    // Nos suscribimos a la señal de aviso de que las sugerencias han cambiado: esta señal está en el SugestionsViewModel como property publica
     [self.viewModel.didUpdateSuggestionsSignal subscribeNext:^(id x) {
         @strongify(self);
         [self.tableView reloadData];
@@ -66,9 +66,6 @@ static NSString *const reuseIdentifier = @"cell";
 #pragma mark - UISearchResultsUpdating
 
 - (void) updateSearchResultsForSearchController:(UISearchController *)searchController {
-    // TODO: implementar esto!
-    // FIXME: hola
-    
     // Le pasamos a viewModel el texto que hay en la barra de búsqueda
     self.viewModel.query = searchController.searchBar.text;
 }

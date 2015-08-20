@@ -22,8 +22,8 @@
                                 resultClass: (Class) resultClass{
     
     FLGResponse *response = [MTLJSONAdapter modelOfClass:self
-              fromJSONDictionary:JSONDictionary
-                           error:NULL];
+                                      fromJSONDictionary:JSONDictionary
+                                                   error:NULL];
     
     id results = JSONDictionary[@"results"];
     
@@ -44,12 +44,10 @@
         // Queremos que se mantenga el JSON
         response.results = results;
     }
-    
-    
-    
     return response;
 }
 
+// Metodo para la gestion de errores en la respuesta del servidor. Hace falta porque la API devuelve un "200" aunque hay algun error
 - (NSError *) error{
     if (self.statusCode.integerValue == 1) {
         return nil;
@@ -64,6 +62,8 @@
 
 #pragma mark - MTLJSONSerializing
 
+// Este metodo especifica como se mapea entre el JSON y el objeto de nuestro modelo
+// Mirar la documentacion del metodo para ver como se mapea algo mas complicado (por ejemplo cuando hay aque crear algun objeto de Cocoa)
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{
              @"statusCode" : @"status_code",

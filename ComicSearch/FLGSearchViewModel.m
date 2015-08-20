@@ -84,6 +84,7 @@
     return self.didUpdateResultsSubject;
 }
 
+// Sobreescribimos el setter para que cada vez que cambie el valor de "query" se inicie una nueva búsqueda
 - (void)setQuery:(NSString *)query{
     if (![_query isEqualToString:query]) {
         _query = [query copy];
@@ -115,10 +116,11 @@
 - (void) beginNewSearch{
     self.currentPage = 1;
     
-    // Lo metemos dentro de este método porque así nos aseguramos de  que lo que va en el bloque se va
+    // Hacemos esto para que no haya un self dentro del bloque
+    NSManagedObjectContext *context = self.privateContext;
+    
+    // Lo metemos dentro de este método porque así nos aseguramos de que lo que va en el bloque se va
     // a ejecutar en el hilo en que hemos creado el "privateContext"
-    NSManagedObjectContext *context = self.privateContext;  // Hacemos esto para que no
-                                                            //haya un self dentro del bloque
     [context performBlock:^{
         [ManagedVolume deleteAllVolumesInManageObjectContext:context];
         // para que se borren los datos de la busqueda anterior al lanzar una busqueda nueva salvamos el contexto

@@ -34,10 +34,10 @@
     self = [super init];
     if (self) {
         // KVO a través de ReactiveCocoa.
-        // Devuelve una señal caliente con el flujo de datos de query
+        // Devuelve una señal caliente con el flujo de datos de query. Señal caliente, sin errores
         RACSignal *input = RACObserve(self, query);
         
-        // Añadimos un filtro para que solo funcione para alores de "query" de al menos 3 caracteres
+        // Añadimos un filtro para que solo funcione para valores de "query" (value) de al menos 3 caracteres
         input = [input filter:^BOOL(NSString *value) {
             return value.length > 2;
         }];
@@ -54,10 +54,11 @@
 //            NSLog(@"input: %@", value);
 //        }];
         
-        // Nos conectamos a la señal
+        // Nos conectamos a la señal: para depuracion
 //        [[input publish] connect];
         
         // Encadenamos señales - nos suscribimos con binding
+        // Eliminamos referencias circulares, muy comun al trabajar con bloques: ojo con los "self" dentro de un bloque
         FLGSuggestionsViewModel * __weak weakSelf = self;
         // Atajo de ReactiveCocoa: @weakify(self);
         RACSignal *suggestionsSignal = [input flattenMap:^RACStream *(NSString *query) {
@@ -75,12 +76,13 @@
             return [RACSignal return:@[error.localizedDescription]];
         }];
         
+        // La señal "_didUpdateSuggestionsSignal" hace la funcion de un "delegate": va a avisar a "FLGSuggestionsViewController" de que han llegado nuevas sugerencia para que repinte la tabla.
         // Como el evento "next" no queremos que envie ningun valor asociado, aprovechamos la señal "suggestionsSignal", la observamos y la modificamos para que no lleve ningún valor asociado y se la asignamos a didUpdateSuggestionsSignal (mediante map)
         _didUpdateSuggestionsSignal = [RACObserve(self, suggestions) map:^id(id value) {
             return nil;
         }];
         
-        // Esta sería una forma abreviada para hacer lo mismo (sin bloques)
+        // Esta sería una forma abreviada para hacer lo mismo (sin bloques):se reemplazan todos los valores que envia la señal con "nil" (en este caso)
 //        _didUpdateSuggestionsSignal = [RACObserve(self, suggestions) mapReplace:nil];
         
     }
@@ -92,6 +94,7 @@
 - (RACSignal *)fetchSuggestionsWithQuery: (NSString *) query{
     FLGComicVineClient *client = [FLGComicVineClient new];
     
+    // "map" sirve para hacer una conversion antes de devolver el resultado de la señal. En nuestro caso se convierte el diccinario que nos devuelve el servidor a un array de sugerencias
     return [[[client fetchSuggestedVolumesWithQuery:query] map:^id(FLGResponse *response) {
         NSArray *volumes = response.results;
         NSMutableArray *titles = [NSMutableArray array];
@@ -101,7 +104,6 @@
             }
             [titles addObject:volume.title];
         }
-        
         return  titles;
         
         // Equivalente al bucle "for in" pero con RAC
