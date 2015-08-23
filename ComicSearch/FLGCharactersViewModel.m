@@ -62,7 +62,7 @@
 
 - (RACSignal *) fetchDetailVolumeWithIdentifier: (NSNumber *) identifier{
     self.client = [FLGComicVineClient new];
-    return [[[self.client fetchDetailVolumeWithId:identifier] doNext:^(FLGResponse *response) {
+    return [[[self.client fetchDetailVolumeWithId:identifier] deliverOnMainThread] doNext:^(FLGResponse *response) {
         FLGVolume *volume = response.results;
         NSMutableArray *characterResults = [NSMutableArray array];
         for (FLGCharacter *character in volume.characters) {
@@ -72,7 +72,7 @@
         }
         self.characters = characterResults;
         [self.didReceiveDetailVolumeSubject sendNext:nil];
-    }] deliverOnMainThread];
+    }];
 }
 
 @end
