@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *realNameLabel;
 
 @property (strong, nonatomic) FLGDetailCharacterResultViewModel *detailCharacterViewModel;
+@property (nonatomic) BOOL cancelled;
 
 @end
 
@@ -30,10 +31,12 @@
     self.nameLabel.text = characterResult.name;
     self.realNameLabel.text = [NSString stringWithFormat:@"%@", characterResult.identifier];
     
+    self.cancelled = NO;
+    
     // Descarga del objeto personaje
-   self.detailCharacterViewModel = [[FLGDetailCharacterResultViewModel alloc] initWithIdentifier:characterResult.identifier];
+    self.detailCharacterViewModel = [[FLGDetailCharacterResultViewModel alloc] initWithIdentifier:characterResult.identifier];
     @weakify(self);
-    [self.detailCharacterViewModel.didReceiveDetailCharacter subscribeNext:^(id x) {
+    [[self.detailCharacterViewModel.didReceiveDetailCharacter takeUntil:[RACObserve(self, cancelled) ignore:@NO]] subscribeNext:^(id x) {
         @strongify(self);
         [self reloadData];
     }];
@@ -48,6 +51,7 @@
 - (void) prepareForReuse{
     [super prepareForReuse];
     // Cancelamos la peticion de descarga de la imagen
+    self.cancelled = YES;
     [self.characterImageView cancelImageRequestOperation];
     
     self.detailCharacterViewModel = nil;

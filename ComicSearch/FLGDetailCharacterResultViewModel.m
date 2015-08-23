@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) FLGComicVineClient *client;
 @property (strong, nonatomic) RACSubject *didReceiveDetailCharacterSubject;
+@property (strong, nonatomic) RACSignal *detailCharacterSignal;
 
 @end
 
@@ -45,13 +46,15 @@
 
 - (RACSignal *) fetchDetailCharacterWithIdentifier: (NSNumber *) identifier{
     self.client = [FLGComicVineClient new];
-    return [[[self.client fetchDetailCharacterWithId:identifier] deliverOnMainThread] doNext:^(FLGResponse *response) {
+    RACSignal *detailCharacterSignal = [[[self.client fetchDetailCharacterWithId:identifier] deliverOnMainThread] doNext:^(FLGResponse *response) {
         FLGCharacter *character = response.results;
         self.name = character.name;
         self.realName = character.realName;
         self.imageURL = character.imageURL;
         [self.didReceiveDetailCharacterSubject sendNext:nil];
     }];
+    
+    return detailCharacterSignal;
 }
 
 
