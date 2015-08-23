@@ -27,10 +27,7 @@
 @implementation FLGCharacterCell
 
 - (void) configureWithCharacterResult:(FLGCharacterResultViewModel *)characterResult{
-//    [self.coverImageView setImageWithURL:searchResult.imageURL]; // Metodo de AFNetworking: realiza la descarga en segundo plano
     self.nameLabel.text = characterResult.name;
-    self.realNameLabel.text = [NSString stringWithFormat:@"%@", characterResult.identifier];
-    
     self.cancelled = NO;
     
     // Descarga del objeto personaje
@@ -50,12 +47,10 @@
 
 - (void) prepareForReuse{
     [super prepareForReuse];
-    // Cancelamos la peticion de descarga de la imagen
     self.cancelled = YES;
     [self.characterImageView cancelImageRequestOperation];
     
     self.detailCharacterViewModel = nil;
-    
     self.characterImageView.image = nil;
     self.nameLabel.text = nil;
     self.realNameLabel.text = nil;
