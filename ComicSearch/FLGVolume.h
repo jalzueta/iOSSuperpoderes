@@ -10,6 +10,8 @@
 
 @interface FLGVolume : MTLModel<MTLJSONSerializing>
 
+@property (copy, nonatomic, readonly) NSNumber *identifier;
 @property (copy, nonatomic, readonly) NSString *title;
+@property (copy, nonatomic, readonly) NSArray *characters;
 
 @end

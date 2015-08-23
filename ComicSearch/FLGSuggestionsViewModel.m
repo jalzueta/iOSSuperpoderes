@@ -26,7 +26,7 @@
 }
 
 - (NSString *)suggestionAtIndex:(NSUInteger)index{
-    return [self.suggestions objectAtIndex: index];
+    return [NSString stringWithFormat:@"%@", [self.suggestions objectAtIndex: index]];
 }
 
 - (instancetype)init

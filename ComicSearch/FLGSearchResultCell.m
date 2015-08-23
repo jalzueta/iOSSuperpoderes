@@ -24,7 +24,7 @@
 - (void) configureWithSearchResult:(FLGSearchResultViewModel *)searchResult{
     [self.coverImageView setImageWithURL:searchResult.imageURL]; // Metodo de AFNetworking: realiza la descarga en segundo plano
     self.titleLabel.text = searchResult.title;
-    self.publisherLabel.text = searchResult.publisher;
+    self.publisherLabel.text = [NSString stringWithFormat:@"%@", searchResult.identifier];//searchResult.publisher;
 }
 
 - (void) prepareForReuse{
