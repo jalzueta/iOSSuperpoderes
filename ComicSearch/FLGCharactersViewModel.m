@@ -51,7 +51,6 @@
 - (void)setIdentifier:(NSNumber *)identifier{
     if (![_identifier isEqualToNumber:identifier]) {
         _identifier = identifier;
-        NSLog(@"setIdentifier: %@", identifier);
         [self beginNewDetailVolumeRequest];
     }
 }

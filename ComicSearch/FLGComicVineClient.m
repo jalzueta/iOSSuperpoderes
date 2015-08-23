@@ -13,7 +13,8 @@
 #import "FLGVolume.h"
 #import "FLGCharacter.h"
 
-static NSString * const APIKey = @"8eacfa46646cf4888066fed652021d901d19cc89";
+//static NSString * const APIKey = @"8eacfa46646cf4888066fed652021d901d19cc89";
+static NSString * const APIKey = @"a3bdd3515e7ce76bec0f7696d7f87ea212ca7e03";
 static NSString * const format = @"json";
 
 @interface FLGComicVineClient ()
