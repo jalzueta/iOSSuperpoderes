@@ -11,6 +11,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "FLGResponse.h"
 #import "FLGVolume.h"
+#import "FLGCharacter.h"
 
 static NSString * const APIKey = @"8eacfa46646cf4888066fed652021d901d19cc89";
 static NSString * const format = @"json";
@@ -76,6 +77,16 @@ static NSString * const format = @"json";
     return  [self GET:path parameters:parameters resultClass:[FLGVolume class]];
 }
 
+- (RACSignal *) fetchDetailCharacterWithId: (NSNumber *) identifier {
+    NSDictionary *parameters = @{
+                                 @"api_key" : APIKey,
+                                 @"format" : format,
+                                 @"field_list" : @"id,name,image,real_name"
+                                 };
+    
+    NSString *path = [NSString stringWithFormat:@"character/4005-%@", identifier];
+    return  [self GET:path parameters:parameters resultClass:[FLGCharacter class]];
+}
 
 #pragma mark - Private
 

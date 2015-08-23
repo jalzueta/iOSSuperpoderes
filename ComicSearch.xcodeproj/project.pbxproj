@@ -22,6 +22,7 @@
 		59392EA61B85F15300AF7178 /* FLGCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59392EA51B85F15300AF7178 /* FLGCharacter.m */; };
 		59392EA91B87372000AF7178 /* FLGCharacterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59392EA81B87372000AF7178 /* FLGCharacterCell.m */; };
 		59392EAC1B87387800AF7178 /* FLGCharacterResultViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 59392EAB1B87387800AF7178 /* FLGCharacterResultViewModel.m */; };
+		59392EAF1B8A179000AF7178 /* FLGDetailCharacterResultViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 59392EAE1B8A179000AF7178 /* FLGDetailCharacterResultViewModel.m */; };
 		59C5AC2C1B063FA300DEABB8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC2B1B063FA300DEABB8 /* main.m */; };
 		59C5AC2F1B063FA300DEABB8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5AC2E1B063FA300DEABB8 /* AppDelegate.m */; };
 		59C5AC381B063FA300DEABB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59C5AC361B063FA300DEABB8 /* Main.storyboard */; };
@@ -73,6 +74,8 @@
 		59392EA81B87372000AF7178 /* FLGCharacterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGCharacterCell.m; sourceTree = "<group>"; };
 		59392EAA1B87387800AF7178 /* FLGCharacterResultViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLGCharacterResultViewModel.h; sourceTree = "<group>"; };
 		59392EAB1B87387800AF7178 /* FLGCharacterResultViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGCharacterResultViewModel.m; sourceTree = "<group>"; };
+		59392EAD1B8A179000AF7178 /* FLGDetailCharacterResultViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLGDetailCharacterResultViewModel.h; sourceTree = "<group>"; };
+		59392EAE1B8A179000AF7178 /* FLGDetailCharacterResultViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGDetailCharacterResultViewModel.m; sourceTree = "<group>"; };
 		59C5AC261B063FA300DEABB8 /* ComicSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComicSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C5AC2A1B063FA300DEABB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59C5AC2B1B063FA300DEABB8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -131,6 +134,8 @@
 				59392EA21B85F0A200AF7178 /* FLGCharactersViewModel.m */,
 				59392EAA1B87387800AF7178 /* FLGCharacterResultViewModel.h */,
 				59392EAB1B87387800AF7178 /* FLGCharacterResultViewModel.m */,
+				59392EAD1B8A179000AF7178 /* FLGDetailCharacterResultViewModel.h */,
+				59392EAE1B8A179000AF7178 /* FLGDetailCharacterResultViewModel.m */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -401,6 +406,7 @@
 			files = (
 				59193E351B07583C006FCB2B /* FLGComicVineClient.m in Sources */,
 				5926CC581B08992200573D59 /* FLGSearchResultViewModel.m in Sources */,
+				59392EAF1B8A179000AF7178 /* FLGDetailCharacterResultViewModel.m in Sources */,
 				59392EA91B87372000AF7178 /* FLGCharacterCell.m in Sources */,
 				59392EA01B85ED3200AF7178 /* FLGCharactersViewController.m in Sources */,
 				5915A1B41B06476200528ED7 /* FLGSuggestionsViewController.m in Sources */,

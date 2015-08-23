@@ -12,5 +12,7 @@
 
 @property (copy, nonatomic, readonly) NSNumber *identifier;
 @property (copy, nonatomic, readonly) NSString *name;
+@property (copy, nonatomic, readonly) NSString *realName;
+@property (copy, nonatomic, readonly) NSURL *imageURL;
 
 @end

@@ -8,12 +8,18 @@
 
 #import "FLGCharacterCell.h"
 #import "FLGCharacterResultViewModel.h"
+#import "FLGDetailCharacterResultViewModel.h"
+
+#import <AFNetworking/UIKit+AFNetworking.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface FLGCharacterCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *characterImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *realNameLabel;
+
+@property (strong, nonatomic) FLGDetailCharacterResultViewModel *detailCharacterViewModel;
 
 @end
 
@@ -23,12 +29,29 @@
 //    [self.coverImageView setImageWithURL:searchResult.imageURL]; // Metodo de AFNetworking: realiza la descarga en segundo plano
     self.nameLabel.text = characterResult.name;
     self.realNameLabel.text = [NSString stringWithFormat:@"%@", characterResult.identifier];
+    
+    // Descarga del objeto personaje
+   self.detailCharacterViewModel = [[FLGDetailCharacterResultViewModel alloc] initWithIdentifier:characterResult.identifier];
+    @weakify(self);
+    [self.detailCharacterViewModel.didReceiveDetailCharacter subscribeNext:^(id x) {
+        @strongify(self);
+        [self reloadData];
+    }];
+}
+
+- (void) reloadData{
+    self.nameLabel.text = self.detailCharacterViewModel.name;
+    self.realNameLabel.text = self.detailCharacterViewModel.realName;
+    [self.characterImageView setImageWithURL:self.detailCharacterViewModel.imageURL];
 }
 
 - (void) prepareForReuse{
     [super prepareForReuse];
     // Cancelamos la peticion de descarga de la imagen
-//    [self.coverImageView cancelImageRequestOperation];
+    [self.characterImageView cancelImageRequestOperation];
+    
+    self.detailCharacterViewModel = nil;
+    
     self.characterImageView.image = nil;
     self.nameLabel.text = nil;
     self.realNameLabel.text = nil;

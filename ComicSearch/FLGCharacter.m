@@ -13,8 +13,14 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{
              @"identifier" : @"id",
-             @"name" : @"name"
+             @"name" : @"name",
+             @"realName" : @"real_name",
+             @"imageURL" : @"image.small_url"
              };
+}
+
++ (NSValueTransformer *)imageURLJSONTransformer {
+    return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
 }
 
 @end
