@@ -22,6 +22,7 @@
 - (void) configureWithCharacterResult:(FLGCharacterResultViewModel *)characterResult{
 //    [self.coverImageView setImageWithURL:searchResult.imageURL]; // Metodo de AFNetworking: realiza la descarga en segundo plano
     self.nameLabel.text = characterResult.name;
+    self.realNameLabel.text = [NSString stringWithFormat:@"%@", characterResult.identifier];
 }
 
 - (void) prepareForReuse{

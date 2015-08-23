@@ -39,7 +39,6 @@ static NSString *const reuseIdentifier = @"FLGCharacterCell";
 }
 
 - (void) reloadData{
-    NSLog(@"Reload Data - numberOfCharacters: %lul", (unsigned long)self.viewModel.numberOfCharacters);
     [self.tableView reloadData];
 }
 
@@ -54,12 +53,8 @@ static NSString *const reuseIdentifier = @"FLGCharacterCell";
     
     FLGCharacterCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FLGCharacterCell"];
     
-    NSLog(@"NumberOfCharacters: %lu", (unsigned long)self.viewModel.numberOfCharacters);
-    NSLog(@"Row: %lu", (unsigned long)indexPath.row);
-    if (self.viewModel.numberOfCharacters > indexPath.row) {
-        FLGCharacterResultViewModel *character = [self.viewModel characterAtIndex:indexPath.row];
-        [cell configureWithCharacterResult:character];
-    }
+    FLGCharacterResultViewModel *character = [self.viewModel characterAtIndex:indexPath.row];
+    [cell configureWithCharacterResult:character];
     
     return cell;
 }

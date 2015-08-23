@@ -22,6 +22,8 @@
 @property (copy, nonatomic) NSArray *characters;
 @property (strong, nonatomic) FLGComicVineClient *client;
 
+@property (strong, nonatomic) RACSubject *didReceiveDetailVolumeSubject;
+
 @end
 
 @implementation FLGCharactersViewModel
@@ -37,34 +39,39 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
-        RACSignal *input = RACObserve(self, identifier);
-        @weakify(self);
-        RACSignal *charactersSignal = [input flattenMap:^RACStream *(NSNumber *identifier) {
-            @strongify(self);
-            return [self fetchDetailVolumeWithIdentifier: identifier];
-        }];
-        RAC(self, characters) = [charactersSignal catch:^RACSignal *(NSError *error) {
-            return [RACSignal return:@[error.localizedDescription]];
-        }];
-        _didReceiveDetailVolume = [RACObserve(self, characters) map:^id(id value) {
-            return nil;
-        }];
+        _didReceiveDetailVolumeSubject = [RACSubject subject];
     }
     return self;
 }
 
+- (RACSignal *)didReceiveDetailVolume{
+    return self.didReceiveDetailVolumeSubject;
+}
+
+- (void)setIdentifier:(NSNumber *)identifier{
+    if (![_identifier isEqualToNumber:identifier]) {
+        _identifier = identifier;
+        NSLog(@"setIdentifier: %@", identifier);
+        [self beginNewDetailVolumeRequest];
+    }
+}
+
+- (void) beginNewDetailVolumeRequest{
+    [[[self fetchDetailVolumeWithIdentifier:self.identifier] publish] connect];
+}
+
 - (RACSignal *) fetchDetailVolumeWithIdentifier: (NSNumber *) identifier{
     self.client = [FLGComicVineClient new];
-    return [[[self.client fetchDetailVolumeWithId:identifier] map:^id(FLGResponse *response) {
+    return [[[self.client fetchDetailVolumeWithId:identifier] doNext:^(FLGResponse *response) {
         FLGVolume *volume = response.results;
-//        return volume.characters;
         NSMutableArray *characterResults = [NSMutableArray array];
         for (FLGCharacter *character in volume.characters) {
             FLGCharacterResultViewModel *characterResult = [[FLGCharacterResultViewModel alloc] initWithIdentifier:character.identifier
                                                                                                               name:character.name];
             [characterResults addObject:characterResult];
         }
-        return  characterResults;
+        self.characters = characterResults;
+        [self.didReceiveDetailVolumeSubject sendNext:nil];
     }] deliverOnMainThread];
 }
 
