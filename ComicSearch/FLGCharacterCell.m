@@ -28,6 +28,7 @@
 
 - (void) configureWithCharacterResult:(FLGCharacterResultViewModel *)characterResult{
     self.nameLabel.text = characterResult.name;
+    self.realNameLabel.text = @"";
     self.cancelled = NO;
     
     // Descarga del objeto personaje
