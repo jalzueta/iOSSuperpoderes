@@ -11,8 +11,10 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "FLGResponse.h"
 #import "FLGVolume.h"
+#import "FLGCharacter.h"
 
-static NSString * const APIKey = @"8eacfa46646cf4888066fed652021d901d19cc89";
+//static NSString * const APIKey = @"8eacfa46646cf4888066fed652021d901d19cc89";
+static NSString * const APIKey = @"a3bdd3515e7ce76bec0f7696d7f87ea212ca7e03";
 static NSString * const format = @"json";
 
 @interface FLGComicVineClient ()
@@ -30,6 +32,8 @@ static NSString * const format = @"json";
     if (self) {
         _requestManager = [[AFHTTPRequestOperationManager alloc]
                            initWithBaseURL:[NSURL URLWithString:@"http://www.comicvine.com/api"]];
+//        _requestManager.responseSerializer = [AFJSONResponseSerializer serializer];
+//        _requestManager.responseSerializer.acceptableContentTypes = [_requestManager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
     }
     return self;
 }
@@ -63,6 +67,28 @@ static NSString * const format = @"json";
     return  [self GET:@"search" parameters:parameters resultClass:Nil];
 }
 
+- (RACSignal *) fetchDetailVolumeWithId: (NSNumber *) identifier {
+    NSDictionary *parameters = @{
+                                 @"api_key" : APIKey,
+                                 @"format" : format,
+                                 @"field_list" : @"id,name,characters"
+                                 };
+    
+    NSString *path = [NSString stringWithFormat:@"volume/4050-%@", identifier];
+    return  [self GET:path parameters:parameters resultClass:[FLGVolume class]];
+}
+
+- (RACSignal *) fetchDetailCharacterWithId: (NSNumber *) identifier {
+    NSDictionary *parameters = @{
+                                 @"api_key" : APIKey,
+                                 @"format" : format,
+                                 @"field_list" : @"id,name,image,real_name"
+                                 };
+    
+    NSString *path = [NSString stringWithFormat:@"character/4005-%@", identifier];
+    return  [self GET:path parameters:parameters resultClass:[FLGCharacter class]];
+}
+
 #pragma mark - Private
 
 - (RACSignal *) GET: (NSString *) path
@@ -82,16 +108,18 @@ static NSString * const format = @"json";
     // Al hacer este "return" se está creando la suscripción
     return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         // Todo lo de aqui dentro solo se ejecuta si hay alguien suscrito
-        AFHTTPRequestOperation *operation = [self.requestManager GET:path
-                                                          parameters:parameters
-                                                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                 [subscriber sendNext:responseObject];
-                                                                 // Este "sendNext" es el que desencadena todo lo demas: transformaciones/mapeados del JSON en objetos y repintado de tablas y demás
-                                                                 [subscriber sendCompleted];
-                                                             }
-                                                             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                 [subscriber sendError:error];
-                                                             }];
+        AFHTTPRequestOperation *operation;
+//        operation.responseSerializer.acceptableContentTypes = [operation.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+        operation = [self.requestManager GET:path
+                                  parameters:parameters
+                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                         [subscriber sendNext:responseObject];
+                                         // Este "sendNext" es el que desencadena todo lo demas: transformaciones/mapeados del JSON en objetos y repintado de tablas y demás
+                                         [subscriber sendCompleted];
+                                     }
+                                     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                         [subscriber sendError:error];
+                                     }];
         
         // Devuelve un objeto a través del cual detectamos cuando hay una des-suscripcion a esta señal
         // Una des-suscripcion ocurre por ejemplo cuando se está "observando" una property mediante binding

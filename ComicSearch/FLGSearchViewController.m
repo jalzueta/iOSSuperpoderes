@@ -11,6 +11,10 @@
 
 #import "FLGSearchViewModel.h"
 #import "FLGSearchResultCell.h"
+#import "FLGSearchResultViewModel.h"
+
+#import "FLGCharactersViewController.h"
+#import "FLGCharactersViewModel.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -59,6 +63,15 @@
     if (indexPath.row == (self.viewModel.numberOfResults -1)) {
         [self.viewModel fetchMoreResults];
     }
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    FLGCharactersViewController *charactersViewController = (FLGCharactersViewController *)segue.destinationViewController;
+    FLGSearchResultViewModel *selectedSearchResultViewModel = (FLGSearchResultViewModel *)[self.viewModel resultAtIndex:[self.tableView indexPathForSelectedRow].row];
+    FLGCharactersViewModel *characterViewModel = charactersViewController.viewModel;
+    characterViewModel.identifier = selectedSearchResultViewModel.identifier;
 }
 
 #pragma mark - Actions

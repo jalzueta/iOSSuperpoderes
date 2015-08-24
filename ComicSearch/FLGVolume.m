@@ -7,13 +7,21 @@
 //
 
 #import "FLGVolume.h"
+#import "FLGCharacter.h"
 
 @implementation FLGVolume
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{
-             @"title" : @"name" // Le asignamos el valor del atributo "name" del JSON a la propiedad "title" de FLGVolume
+             @"identifier" : @"id",
+             @"title" : @"name", // Le asignamos el valor del atributo "name" del JSON a la propiedad "title" de FLGVolume
+             @"characters" : @"characters"
              };
+}
+
++ (NSValueTransformer *)charactersJSONTransformer {
+    return [MTLJSONAdapter arrayTransformerWithModelClass:[FLGCharacter class]];
+//    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass: [FLGCharacter class]];
 }
 
 @end

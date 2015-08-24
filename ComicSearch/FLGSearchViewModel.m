@@ -106,9 +106,10 @@
     
     ManagedVolume *volume = [self.frc objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
-    return [[FLGSearchResultViewModel alloc] initWithImageURL:[NSURL URLWithString:volume.imageURL]
-                                                        title:volume.title
-                                                    publisher:volume.publisher];
+    return [[FLGSearchResultViewModel alloc] initWithIdentifier:volume.identifier
+                                                       imageURL:[NSURL URLWithString:volume.imageURL]
+                                                          title:volume.title
+                                                      publisher:volume.publisher];
 }
 
 #pragma mark - Private
@@ -148,7 +149,7 @@
                                   inManagedObjectContext:self.privateContext
                                                    error:nil];
         
-        // Lo metemos dentro de este método porque así nos aseguramos de  que lo que va en el bloque se va
+        // Lo metemos dentro de este método porque así nos aseguramos de que lo que va en el bloque se va
         // a ejecutar en el hilo en que hemos creado el "privateContext"
         [context performBlockAndWait:^{
             [context save:nil];

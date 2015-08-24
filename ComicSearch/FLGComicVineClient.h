@@ -15,5 +15,7 @@
 - (RACSignal *) fetchSuggestedVolumesWithQuery: (NSString *) query;
 
 - (RACSignal *) fetchVolumsWithQuery: (NSString *) query page: (NSUInteger) page;
+- (RACSignal *) fetchDetailVolumeWithId: (NSNumber *) identifier;
+- (RACSignal *) fetchDetailCharacterWithId: (NSNumber *) identifier;
 
 @end

@@ -10,10 +10,12 @@
 
 @implementation FLGSearchResultViewModel
 
-- (instancetype) initWithImageURL: (NSURL *) imageURL
-                            title: (NSString *) title
-                        publisher: (NSString *) publisher{
+- (instancetype) initWithIdentifier: (NSNumber *) identifier
+                           imageURL: (NSURL *) imageURL
+                              title: (NSString *) title
+                          publisher: (NSString *) publisher{
     if (self = [super init]) {
+        _identifier = identifier;
         _imageURL = [imageURL copy];
         _title = [title copy];
         _publisher = [publisher copy];
