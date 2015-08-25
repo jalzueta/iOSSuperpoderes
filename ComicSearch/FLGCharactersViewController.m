@@ -13,12 +13,6 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "FLGCharacter.h"
 
-static NSString *const reuseIdentifier = @"FLGCharacterCell";
-
-@interface FLGCharactersViewController ()
-
-@end
-
 @implementation FLGCharactersViewController
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder{

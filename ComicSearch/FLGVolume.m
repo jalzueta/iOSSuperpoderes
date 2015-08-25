@@ -21,7 +21,6 @@
 
 + (NSValueTransformer *)charactersJSONTransformer {
     return [MTLJSONAdapter arrayTransformerWithModelClass:[FLGCharacter class]];
-//    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass: [FLGCharacter class]];
 }
 
 @end

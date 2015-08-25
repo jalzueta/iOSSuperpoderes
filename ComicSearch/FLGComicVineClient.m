@@ -32,8 +32,6 @@ static NSString * const format = @"json";
     if (self) {
         _requestManager = [[AFHTTPRequestOperationManager alloc]
                            initWithBaseURL:[NSURL URLWithString:@"http://www.comicvine.com/api"]];
-//        _requestManager.responseSerializer = [AFJSONResponseSerializer serializer];
-//        _requestManager.responseSerializer.acceptableContentTypes = [_requestManager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
     }
     return self;
 }
@@ -107,10 +105,8 @@ static NSString * const format = @"json";
     
     // Al hacer este "return" se está creando la suscripción
     return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        // Todo lo de aqui dentro solo se ejecuta si hay alguien suscrito
-        AFHTTPRequestOperation *operation;
-//        operation.responseSerializer.acceptableContentTypes = [operation.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
-        operation = [self.requestManager GET:path
+        
+        AFHTTPRequestOperation *operation = [self.requestManager GET:path
                                   parameters:parameters
                                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                          [subscriber sendNext:responseObject];
